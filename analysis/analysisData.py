@@ -23,13 +23,12 @@ def loadShortedStockToDF( dest_date ):
 def sortByShortVolume(dest_date):
     df = loadShortedStockToDF( dest_date )
     final_df = df.sort_values(by=['ShortVolume'], ascending=False)
-    print(final_df.head(10))
+    print(final_df[:20])
 
 def sortByTotalVolume(dest_date):
     df = loadShortedStockToDF( dest_date )
     final_df = df.sort_values(by=['TotalVolume'], ascending=False)
-    print(final_df.head(10))
+    print(final_df[:20])
 
-
-sortByShortVolume('20210603')
-sortByTotalVolume('20210604')
+# sortByShortVolume('20210624')
+sortByShortVolume('20210630')

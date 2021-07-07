@@ -3,7 +3,19 @@ import os
 import csv
 from pathlib import Path
 import pandas as pd
-from dateutil.rrule import DAILY, rrule, MO, TU, WE, TH, FR
+import pymongo
+
+def loadFromMongoDB(symbol):
+
+    myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+    mydb = myclient["shortInterest"]
+    mycol = mydb["daily"]
+
+    myquery = {"Symbol": symbol}
+    mydoc = mycol.find(myquery)
+
+    for x in mydoc:
+        print(x)
 
 def loadShortedStockToDF( dest_date ):
     # today = datetime.date.today();
@@ -32,13 +44,11 @@ def sortByTotalVolume(dest_date):
     print(final_df[:20])
 
 # sortByShortVolume('20210624')
-sortByShortVolume('20210706')
+# sortByShortVolume('20210706')
+loadFromMongoDB('NIO')
 # sortByTotalVolume('20210702')
 
-# def histShortInterest(stock, start_date, end_date):
-#     mydates = pd.date_range(start_date, end_date).tolist()
-#
-#     return rrule(DAILY, dtstart=start_date, until=end_date, byweekday=(MO, TU, WE, TH, FR))
+
 
 
 

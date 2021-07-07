@@ -3,6 +3,7 @@ import os
 import csv
 from pathlib import Path
 import pandas as pd
+from dateutil.rrule import DAILY, rrule, MO, TU, WE, TH, FR
 
 def loadShortedStockToDF( dest_date ):
     # today = datetime.date.today();
@@ -23,7 +24,7 @@ def loadShortedStockToDF( dest_date ):
 def sortByShortVolume(dest_date):
     df = loadShortedStockToDF( dest_date )
     final_df = df.sort_values(by=['ShortVolume'], ascending=False)
-    print(final_df[:20])
+    print(final_df[:50])
 
 def sortByTotalVolume(dest_date):
     df = loadShortedStockToDF( dest_date )
@@ -31,4 +32,13 @@ def sortByTotalVolume(dest_date):
     print(final_df[:20])
 
 # sortByShortVolume('20210624')
-sortByShortVolume('20210630')
+sortByShortVolume('20210706')
+# sortByTotalVolume('20210702')
+
+# def histShortInterest(stock, start_date, end_date):
+#     mydates = pd.date_range(start_date, end_date).tolist()
+#
+#     return rrule(DAILY, dtstart=start_date, until=end_date, byweekday=(MO, TU, WE, TH, FR))
+
+
+

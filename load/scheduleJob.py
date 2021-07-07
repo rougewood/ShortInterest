@@ -1,9 +1,14 @@
 import schedule
 import time
-from dataloadDaily import loadAll
+from dataloadDaily import loadToday
 import datetime
 
-schedule.every().day.at("20:30").do(loadAll(datetime.now(), datetime.now()))
+# schedule.every().day.at("20:30").do(loadAll(datetime.date.today(), datetime.date.today()))
+
+def job():
+    print("I'm working...")
+
+schedule.every().day.at("20:30").do(loadToday)
 
 while 1:
     schedule.run_pending()

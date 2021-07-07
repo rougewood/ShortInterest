@@ -24,9 +24,11 @@ def load(exchange, file_date, file_path):
 def get_file_name(file, file_date):
     return file+file_date+'.txt'
 
+def loadToday():
+    loadAll(datetime.date.today(), datetime.date.today())
 
 def loadAll(start_date, end_date):
-    clearMongoDB('shortInterest', 'daily')
+    # clearMongoDB('shortInterest', 'daily')
 
     exchanges = ["CNMSshvol","FNQCshvol","FNRAshvol","FNSQshvol","FNYXshvol","FORFshvol"]
     # start_date = datetime.date(2021, 1, 1)
@@ -65,8 +67,8 @@ def mongoimport(csv_path, db_name, coll_name, db_url='localhost', db_port=27017)
     payload = json.loads(data.to_json(orient='records'))
     coll.insert_many(payload)
 
-# loadAll(datetime.date(2021, 6, 29), datetime.date(2021, 6, 30))
-loadAll(datetime.datetime.now(), datetime.datetime.now())
+loadAll(datetime.date(2021, 7, 6), datetime.date(2021, 7, 6))
+# loadAll(datetime.date.today(), datetime.date.today())
 
 # schedule.every().day.at("1:30").do(load)
 #

@@ -47,7 +47,7 @@ def sortByTotalVolume(dest_date):
 # sortByShortVolume('20210624')
 # sortByShortVolume('20210706')
 # loadFromMongoDB('NIO')
-sortByTotalVolume('20210513')
+sortByTotalVolume('20210708')
 
 
 

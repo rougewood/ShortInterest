@@ -40,7 +40,7 @@ def loadAll(start_date, end_date):
         print(start_date)
         # d1 = start_date.strftime("%Y%m%d")
         base_path = Path(__file__).parent
-        dest_path = '../data/' + start_date + '/'
+        dest_path = '../data_short/' + start_date + '/'
         file_path = (base_path / dest_path).resolve()
         Path(file_path).mkdir(parents=True, exist_ok=True)
         os.chdir(file_path)
@@ -64,7 +64,7 @@ def mongoimport(csv_path, db_name, coll_name, db_url='localhost', db_port=27017)
     client = MongoClient(db_url, db_port)
     db = client[db_name]
     coll = db[coll_name]
-    data = pd.read_csv(csv_path, delimiter='|')
+    data = pd.read_csv(csv_path, delimiter='|').query('ShortVolume > 0')
     payload = json.loads(data.to_json(orient='records'))
     coll.insert_many(payload)
 
@@ -106,7 +106,7 @@ def getDateList(start_date,end_date):
     return [x.strftime('%Y%m%d') for x in list(mydates)]
 
 
-loadAll(datetime.date(2021, 6, 10), datetime.date(2021, 7, 6))
+loadAll(datetime.date(2021, 5, 10), datetime.date(2021, 6, 3))
 # loadAll(datetime.date.today(), datetime.date.today())
 
 # schedule.every().day.at("1:30").do(load)

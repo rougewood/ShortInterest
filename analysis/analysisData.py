@@ -21,7 +21,7 @@ def loadShortedStockToDF( dest_date ):
     # today = datetime.date.today();
     # yesterday = today - datetime.timedelta(days=1)
     base_path = Path(__file__).parent
-    dest_path = '../data/' + dest_date + '/'
+    dest_path = '../data_short/' + dest_date + '/'
     file_path = (base_path / dest_path).resolve()
     os.chdir(file_path)
 
@@ -43,10 +43,11 @@ def sortByTotalVolume(dest_date):
     final_df = df.sort_values(by=['TotalVolume'], ascending=False)
     print(final_df[:20])
 
+
 # sortByShortVolume('20210624')
 # sortByShortVolume('20210706')
-loadFromMongoDB('NIO')
-# sortByTotalVolume('20210702')
+# loadFromMongoDB('NIO')
+sortByTotalVolume('20210513')
 
 
 

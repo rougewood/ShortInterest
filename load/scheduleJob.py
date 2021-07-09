@@ -1,6 +1,6 @@
 import schedule
 import time
-from dataloadDaily import loadToday
+from loadShortInterestDaily import loadToday
 import datetime
 
 # schedule.every().day.at("20:30").do(loadAll(datetime.date.today(), datetime.date.today()))

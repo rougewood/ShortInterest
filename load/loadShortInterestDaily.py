@@ -106,7 +106,7 @@ def getDateList(start_date,end_date):
     return [x.strftime('%Y%m%d') for x in list(mydates)]
 
 
-loadAll(datetime.date(2021, 5, 10), datetime.date(2021, 6, 3))
+loadAll(datetime.date(2021, 6, 10), datetime.date(2021, 7, 9))
 # loadAll(datetime.date.today(), datetime.date.today())
 
 # schedule.every().day.at("1:30").do(load)

@@ -5,6 +5,8 @@ from pathlib import Path
 import pandas as pd
 import pymongo
 
+
+
 def loadFromMongoDB(symbol):
 
     myclient = pymongo.MongoClient("mongodb://localhost:27017/")
@@ -43,11 +45,27 @@ def sortByTotalVolume(dest_date):
     final_df = df.sort_values(by=['TotalVolume'], ascending=False)
     print(final_df[:20])
 
+# def tickerChart():
+#     app = EClient(MyWrapper())  # 1 create wrapper subclass and pass it to EClient
+#     app.connect("127.0.0.1", 7496, clientId=123)  # 2 connect to TWS/IBG
+#     app.run()  # 3 start message thread
+
+def sortByShortRatio(dest_date):
+    df = loadShortedStockToDF( dest_date )
+    final_df = df.sort_values(by=['ShortRatio'], ascending=False).query('ShortVolume>1000000')
+    print(final_df[:100])
+
+def sortByShortRatio(dest_date, symbol):
+    df = loadShortedStockToDF( dest_date )
+    final_df = df.sort_values(by=['ShortRatio'], ascending=False).query('ShortVolume>1000000')
+    final_df = final_df.loc[final_df['Symbol']==symbol]
+    print(final_df[:20])
 
 # sortByShortVolume('20210624')
 # sortByShortVolume('20210706')
 # loadFromMongoDB('NIO')
-sortByTotalVolume('20210708')
+sortByTotalVolume('20210709')
+# sortByShortRatio('20210707', 'CARV')
 
 
 

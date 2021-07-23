@@ -6,18 +6,12 @@ import pandas as pd
 import datetime
 import mplfinance as fplt
 import xml.etree.ElementTree as ET
+import threading
 
 class MyWrapper(EWrapper):
 
     def __init__(self):
         self.df = pd.DataFrame(columns=['date', 'open', 'high', 'low', 'close', 'volume'])
-
-    def nextValidId(self, orderId:int):
-        #4 first message received is this one
-        print("setting nextValidOrderId: %d", orderId)
-        self.nextValidOrderId = orderId
-        #5 start requests here
-        self.start()
 
     def historicalData(self, reqId:int, bar: BarData):
         #7 data is received for every bar
@@ -51,7 +45,6 @@ class MyWrapper(EWrapper):
         #8 data is finished
         print("HistoricalDataEnd. ReqId:", reqId, "from", start, "to", end)
         #9 this is the logical end of your program
-        app.disconnect()
         print("finished")
         print(self.df)
         self.df.index = pd.DatetimeIndex(self.df['date'])
@@ -69,20 +62,23 @@ class MyWrapper(EWrapper):
         # these messages can come anytime.
         print("Error. Id: " , reqId, " Code: " , errorCode , " Msg: " , errorString)
 
-    def start(self):
-        queryTime = datetime.datetime.today().strftime("%Y%m%d %H:%M:%S")
+def run_loop():
+    app.run()
 
-        fx = Contract()
-        fx.secType = "STK" #FUT
-        fx.symbol = "NIO"
-        fx.currency = "USD"
-        fx.exchange = "ISLAND"
+app = EClient(MyWrapper())
+# 2 connect to TWS/IBG
+app.connect("127.0.0.1", 7496, clientId=123)
 
-        #6 request data, using fx since I don't have Japanese data
-        # app.reqHistoricalData(4102, fx, queryTime,"1 M", "1 day", "MIDPOINT", 1, 1, False, [])
-        # app.reqHistoricalData(4102, fx, queryTime, "6 M", "1 day", "TRADES", 1, 1, False, [])
-        app.reqFundamentalData(1, fx, 'RESC', [])
+# threading is needed only if you plan to interact after run is called
+# this is a good way if you use a ui like jupyter
+api_thread = threading.Thread(target=run_loop, daemon=True)
+api_thread.start()
 
-app = EClient(MyWrapper()) #1 create wrapper subclass and pass it to EClient
-app.connect("127.0.0.1", 7496, clientId=124) #2 connect to TWS/IBG
-app.run() #3 start message thread
+contract = Contract()
+contract.secType = "STK"  # FUT
+contract.symbol = "NIO"
+contract.currency = "USD"
+contract.exchange = "ISLAND"
+
+# app.reqFundamentalData(1, contract, 'RESC', [])
+app.reqHistoricalData(1, contract, "", "6 M", "1 day", "TRADES", 1, 2, False, [])
